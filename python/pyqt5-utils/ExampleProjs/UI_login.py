@@ -7,7 +7,7 @@ class loginWindow(QMainWindow):
     def __init__(self):
         super(loginWindow, self).__init__()
         # 导入界面文件
-        uic.loadUi(r"Py\projects\pyQt\ExampleProjs\form.ui", self)
+        uic.loadUi(r"python\pyqt5-utils\ExampleProjs\form.ui", self)
 
 
     @pyqtSlot()

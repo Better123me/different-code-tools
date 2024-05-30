@@ -6,4 +6,4 @@ class projManager(QMainWindow):
     def __init__(self):
         super(projManager, self).__init__()
         # 导入界面文件
-        uic.loadUi("Py\projects\pyQt\ExampleProjs\mainwindow.ui", self)
+        uic.loadUi("python\pyqt5-utils\ExampleProjs\mainwindow.ui", self)
