@@ -1,0 +1,63 @@
+# 设定指定的日期  
+$specifiedDate = Get-Date "2024-06-23"  
+  
+# 获取文件夹路径  
+$folderPath = "E:\1120211182张皓07112102 Project-2-源工程" # 替换为你的文件夹路径  
+  
+# 获取文件夹内的所有文件  
+$files = Get-ChildItem -Path $folderPath -File -Recurse  
+  
+# 循环遍历每个文件并设置新的修改日期  
+foreach ($file in $files) {  
+    # 随机选择小时为8或9  
+    $randomHour = Get-Random -Minimum 8 -Maximum 10  
+      
+    # 生成随机分钟（1-59）和随机秒钟（0-59）  
+    $randomMinute = Get-Random -Maximum 60  
+    $randomSecond = Get-Random -Maximum 60  
+      
+    # 构造新的DateTime对象，日期为$specifiedDate，时间为随机生成的8点或9点，分钟和秒钟随机  
+    $newDateTime = $specifiedDate.Date.AddHours($randomHour).AddMinutes($randomMinute).AddSeconds($randomSecond)  
+      
+    # 更改文件的修改日期  
+    $file.LastWriteTime = $newDateTime  
+      
+    # 输出文件的名称和新的修改日期以验证  
+    Write-Host "文件: $($file.FullName) 的修改日期已更改为: $($file.LastWriteTime)"  
+}
+
+# 设定要处理的文件夹路径  
+$folderPath = "E:\1120211182张皓07112102 Project-2-源工程" # 替换为你的文件夹路径  
+  
+# 递归获取文件夹及其所有子文件夹和文件  
+$items = Get-ChildItem -Path $folderPath -Recurse -Force  
+  
+# 初始化一个变量来存储最新的修改时间  
+$latestModifyTime = (Get-Date "2001-01-01").AddDays(-1) # 设置为一个很早的日期  
+  
+# 遍历所有文件和文件夹，找到最新的修改时间  
+foreach ($item in $items) {  
+    if ($item.LastWriteTime -gt $latestModifyTime) {  
+        $latestModifyTime = $item.LastWriteTime  
+    }  
+}  
+  
+# 递归设置文件夹的修改时间  
+function SetFolderModifyTime($folder) {  
+    # 设置文件夹的修改时间为找到的最新时间  
+    $folder.LastWriteTime = $latestModifyTime  
+  
+    # 递归处理子文件夹  
+    foreach ($subFolder in $folder.GetDirectories()) {  
+        SetFolderModifyTime($subFolder)  
+    }  
+}  
+  
+# 获取根文件夹对象  
+$rootFolder = Get-Item -Path $folderPath  
+  
+# 设置根文件夹的修改时间  
+SetFolderModifyTime($rootFolder)  
+  
+# 输出根文件夹的修改时间以验证  
+Write-Host "根文件夹的修改日期已更改为: $($rootFolder.LastWriteTime)"
